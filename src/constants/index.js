@@ -138,6 +138,38 @@ const socialImgs = [
   },
 ];
 
+const projects = [
+  {
+    id: "ryde",
+    name: "Minimal E-Commerce Experience",
+    sub: "Built with PHP",
+    imgPath: "/images/project1.png",
+    shortDesc: "A clean and responsive shopping platform focused on simplicity, performance, and elegant product browsing.",
+    longDesc: "This is a minimal E-Commerce experience designed to highlight speed, simplicity, and user-centric navigation. Built using PHP on the backend for clean database interactions, user authentication, and shopping cart management, combined with a responsive frontend utilizing custom styled CSS layouts and smooth transitions.\n\nKey features include dynamic product search, category filtering, a persistence shopping cart, checkout processing simulation, and a dashboard interface to manage items. Perfect for lightweight, self-hosted e-commerce solutions.",
+    visitUrl: "https://github.com/Scalicon66",
+  },
+  {
+    id: "coming-soon-1",
+    name: "Interactive Web Portal",
+    sub: "React & Three.js",
+    imgPath: "/images/project1.png",
+    shortDesc: "An immersive 3D web experience exploring spatial interfaces and seamless real-time user interactions.",
+    longDesc: "A next-generation web portal leveraging WebGL, React Three Fiber, and GSAP. This project creates an interactive 3D environment allowing users to explore virtual representations of projects, interact with objects in real-time, and navigate through a spatial UI.\n\nDesigned to push the boundaries of traditional web design, focusing on high-fps transitions, dynamic lighting shaders, and fully responsive camera tracking.",
+    visitUrl: "#",
+    isPlaceholder: true,
+  },
+  {
+    id: "coming-soon-2",
+    name: "Collaborative Workspace App",
+    sub: "Laravel & WebSockets",
+    imgPath: "/images/project1.png",
+    shortDesc: "Real-time task board and team collaboration platform for remote workflows and fast syncing.",
+    longDesc: "A real-time collaborative workspace designed to streamline remote team tasks and communications. Built with Laravel on the backend utilizing WebSockets for instant synchronization across multiple connected clients.\n\nIncludes drag-and-drop task boards, live chat channels, group notifications, and fine-grained role-based permissions, creating a seamless workspace for modern agile teams.",
+    visitUrl: "#",
+    isPlaceholder: true,
+  }
+];
+
 export {
   words,
   abilities,
@@ -146,4 +178,5 @@ export {
   socialImgs,
   techStackIcons,
   navLinks,
+  projects,
 };
