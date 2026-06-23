@@ -89,33 +89,23 @@ const expCards = [
 const techStackIcons = [
   {
     name: "React Developer",
-    modelPath: "/models/react_logo-transformed.glb",
-    scale: 1,
-    rotation: [0, 0, 0],
+    imgPath: "/images/react.svg",
   },
   {
     name: "Laravel Developer",
-    modelPath: "/models/laravel-transformed.glb",
-    scale: 1.5,
-    rotation: [0, 0, 0],
+    imgPath: "/images/laravel.svg",
   },
   {
     name: "Backend Developer",
-    modelPath: "/models/php-transformed.glb",
-    scale: 2.2,
-    rotation: [0, 0, 0],
+    imgPath: "/images/php.svg",
   },
   {
     name: "Interactive Developer",
-    modelPath: "/models/three.js-transformed.glb",
-    scale: 0.05,
-    rotation: [0, 0, 0],
+    imgPath: "/images/threejs.svg",
   },
   {
     name: "Project Manager",
-    modelPath: "/models/git-svg-transformed.glb",
-    scale: 0.05,
-    rotation: [0, -Math.PI / 4, 0],
+    imgPath: "/images/git.svg",
   },
 ];
 
