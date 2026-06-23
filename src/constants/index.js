@@ -122,24 +122,9 @@ const techStackIcons = [
 
 const socialImgs = [
   {
-    name: "insta",
-    imgPath: "/images/insta.png",
-    url: "https://instagram.com",
-  },
-  {
-    name: "fb",
-    imgPath: "/images/fb.png",
-    url: "https://facebook.com",
-  },
-  {
-    name: "x",
-    imgPath: "/images/x.png",
-    url: "https://twitter.com",
-  },
-  {
     name: "linkedin",
     imgPath: "/images/linkedin.png",
-    url: "https://linkedin.com",
+    url: "https://linkedin.com/in/omar-ash1/",
   },
 ];
 
