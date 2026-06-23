@@ -115,6 +115,7 @@ const Experience = () => {
                         <img 
                           src={card.logoPath} 
                           alt="logo" 
+                          loading="lazy"
                           className={card.logoPath === '/images/js.png' ? 'rounded-2xl' : ''}
                         />
                       </div>

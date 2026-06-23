@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import * as THREE from "three";
 
 const Preloader = ({ onComplete }) => {
   const [progress, setProgress] = useState(0);
@@ -13,8 +14,11 @@ const Preloader = ({ onComplete }) => {
   }, []);
 
   useEffect(() => {
-    // Artificial progress loader that slows down as it gets closer to 90%
     let interval;
+    let completed3D = false;
+    let completedWindow = false;
+
+    // Artificial progress loader that slows down as it gets closer to 90%
     const startProgress = () => {
       interval = setInterval(() => {
         setProgress((prev) => {
@@ -31,33 +35,78 @@ const Preloader = ({ onComplete }) => {
 
     startProgress();
 
-    // When window is fully loaded
-    const handleLoad = () => {
-      clearInterval(interval);
-      setProgress(100);
-      setTimeout(() => {
-        setIsFadingOut(true);
+    // Check if both page window load and 3D assets load are complete
+    const checkCompletion = () => {
+      if (completedWindow && completed3D) {
+        clearInterval(interval);
+        setProgress(100);
         setTimeout(() => {
-          if (onComplete) onComplete();
-        }, 700); // match transition duration
-      }, 400); // hold 100% briefly
+          setIsFadingOut(true);
+          setTimeout(() => {
+            if (onComplete) onComplete();
+          }, 700); // match transition duration
+        }, 400); // hold 100% briefly
+      }
+    };
+
+    // Hook into Three.js DefaultLoadingManager to track actual assets loading
+    const originalOnStart = THREE.DefaultLoadingManager.onStart;
+    const originalOnProgress = THREE.DefaultLoadingManager.onProgress;
+    const originalOnLoad = THREE.DefaultLoadingManager.onLoad;
+
+    THREE.DefaultLoadingManager.onStart = (url, itemsLoaded, itemsTotal) => {
+      completed3D = false;
+      if (originalOnStart) originalOnStart(url, itemsLoaded, itemsTotal);
+    };
+
+    THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      const pct = Math.round((itemsLoaded / itemsTotal) * 100);
+      setProgress((prev) => Math.max(prev, Math.min(pct, 99)));
+      if (originalOnProgress) originalOnProgress(url, itemsLoaded, itemsTotal);
+    };
+
+    THREE.DefaultLoadingManager.onLoad = () => {
+      completed3D = true;
+      checkCompletion();
+      if (originalOnLoad) originalOnLoad();
+    };
+
+    // Fallback: if no 3D files load after 500ms, mark 3D complete
+    const check3dIdle = setTimeout(() => {
+      if (progress === 0 && !completed3D) {
+        completed3D = true;
+        checkCompletion();
+      }
+    }, 500);
+
+    const handleLoad = () => {
+      completedWindow = true;
+      checkCompletion();
     };
 
     if (document.readyState === "complete") {
-      handleLoad();
+      completedWindow = true;
+      checkCompletion();
     } else {
       window.addEventListener("load", handleLoad);
     }
 
     // Safety timeout in case load event takes too long or some assets fail to notify
     const safetyTimeout = setTimeout(() => {
-      handleLoad();
+      completedWindow = true;
+      completed3D = true;
+      checkCompletion();
     }, 3500);
 
     return () => {
       clearInterval(interval);
       clearTimeout(safetyTimeout);
+      clearTimeout(check3dIdle);
       window.removeEventListener("load", handleLoad);
+      // Restore original managers
+      THREE.DefaultLoadingManager.onStart = originalOnStart;
+      THREE.DefaultLoadingManager.onProgress = originalOnProgress;
+      THREE.DefaultLoadingManager.onLoad = originalOnLoad;
     };
   }, [onComplete]);
 
