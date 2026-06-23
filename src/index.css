@@ -141,13 +141,40 @@ section {
     }
 
     .contact-btn {
-      @apply flex;
+      @apply hidden lg:flex;
 
       .inner {
         @apply px-5 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
 
         span {
           @apply group-hover:text-white transition-colors duration-300;
+        }
+      }
+    }
+
+    .menu-toggle {
+      @apply flex lg:hidden items-center justify-center p-2 text-white hover:opacity-85 transition-opacity duration-300 cursor-pointer;
+      img {
+        @apply w-6 h-6;
+      }
+    }
+
+    .mobile-menu-container {
+      @apply absolute top-full left-5 right-5 bg-black/95 backdrop-blur-lg border border-white/10 rounded-xl p-6 mt-2 transition-all duration-300 ease-in-out opacity-0 pointer-events-none -translate-y-2 lg:hidden;
+
+      &.open {
+        @apply opacity-100 pointer-events-auto translate-y-0;
+      }
+
+      ul {
+        @apply flex flex-col space-y-4;
+
+        li {
+          @apply text-left border-b border-white/5 last:border-b-0 pb-2 last:pb-0;
+
+          a {
+            @apply block text-white-50 text-lg hover:text-white transition-colors duration-300;
+          }
         }
       }
     }
