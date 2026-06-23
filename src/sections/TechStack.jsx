@@ -1,10 +1,18 @@
+import { lazy, Suspense } from "react";
 import { useGSAP } from "@gsap/react";
+import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 
 import TitleHeader from "../components/TitleHeader";
 import { techStackIcons } from "../constants";
 
+const TechIconCardExperience = lazy(() =>
+  import("../components/models/tech_logos/TechIconCardExperience")
+);
+
 const TechStack = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
   // Animate the tech cards in the skills section
   useGSAP(() => {
     // This animation is triggered when the user scrolls to the #skills wrapper
@@ -54,15 +62,20 @@ const TechStack = () => {
                   component is hovered. */}
               <div className="tech-card-animated-bg" />
               <div className="tech-card-content">
-                {/* The tech-icon-wrapper div contains the img, 
-                    which renders the static SVG of the tech stack icon. */}
+                {/* On mobile, render the simple SVG image. On desktop, render the 3D model canvas. */}
                 <div className="tech-icon-wrapper">
-                  <img
-                    src={techStackIcon.imgPath}
-                    alt={techStackIcon.name}
-                    className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-500 group-hover:scale-110"
-                    loading="lazy"
-                  />
+                  {isMobile ? (
+                    <img
+                      src={techStackIcon.imgPath}
+                      alt={techStackIcon.name}
+                      className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-500 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <Suspense fallback={null}>
+                      <TechIconCardExperience model={techStackIcon} />
+                    </Suspense>
+                  )}
                 </div>
                 {/* The padding-x and w-full classes are used to add horizontal padding to the 
                     text and make it take up the full width of the component. */}
@@ -73,24 +86,6 @@ const TechStack = () => {
               </div>
             </div>
           ))}
-
-          {/* This is for the img part */}
-          {/* {techStackImgs.map((techStackIcon, index) => (
-            <div
-              key={index}
-              className="card-border tech-card overflow-hidden group xl:rounded-full rounded-lg"
-            >
-              <div className="tech-card-animated-bg" />
-              <div className="tech-card-content">
-                <div className="tech-icon-wrapper">
-                  <img src={techStackIcon.imgPath} alt="" />
-                </div>
-                <div className="padding-x w-full">
-                  <p>{techStackIcon.name}</p>
-                </div>
-              </div>
-            </div>
-          ))} */}
         </div>
       </div>
     </div>
