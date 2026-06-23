@@ -8,8 +8,8 @@ gsap.registerPlugin(ScrollTrigger);
 const AppShowcase = () => {
   const sectionRef = useRef(null);
   const rydeRef = useRef(null);
-  const libraryRef = useRef(null);
-  const ycDirectoryRef = useRef(null);
+  const project2Ref = useRef(null);
+  const project3Ref = useRef(null);
 
   useGSAP(() => {
     // Animation for the main section
@@ -20,7 +20,7 @@ const AppShowcase = () => {
     );
 
     // Animations for each app showcase
-    const cards = [rydeRef.current, libraryRef.current, ycDirectoryRef.current];
+    const cards = [rydeRef.current, project2Ref.current, project3Ref.current];
 
     cards.forEach((card, index) => {
       gsap.fromTo(
@@ -53,32 +53,26 @@ const AppShowcase = () => {
             </div>
             <div className="text-content">
               <h2>
-                On-Demand Rides Made Simple with a Powerful, User-Friendly App
-                called Ryde
+                Minimal E-Commerce Experience Built with PHP
               </h2>
               <p className="text-white-50 md:text-xl">
-                An app built with React Native, Expo, & TailwindCSS for a fast,
-                user-friendly experience.
+                A clean and responsive shopping platform focused on simplicity, performance, and elegant 
+                product browsing.
               </p>
             </div>
           </div>
 
-          <div className="project-list-wrapper overflow-hidden">
-            <div className="project" ref={libraryRef}>
-              <div className="image-wrapper bg-[#FFEFDB]">
-                <img
-                  src="/images/project2.png"
-                  alt="Library Management Platform"
-                />
+          <div className="project-list-wrapper">
+            <div ref={project2Ref} className="h-full flex flex-col">
+              <div className="image-wrapper flex-center border border-black-50 bg-black-100 flex-1">
+                <h3 className="text-2xl md:text-3xl font-bold text-white-50 opacity-50">Coming Soon</h3>
               </div>
-              <h2>The Library Management Platform</h2>
             </div>
-
-            <div className="project" ref={ycDirectoryRef}>
-              <div className="image-wrapper bg-[#FFE7EB]">
-                <img src="/images/project3.png" alt="YC Directory App" />
+            
+            <div ref={project3Ref} className="h-full flex flex-col mt-10 xl:mt-0">
+              <div className="image-wrapper flex-center border border-black-50 bg-black-100 flex-1">
+                <h3 className="text-2xl md:text-3xl font-bold text-white-50 opacity-50">Coming Soon</h3>
               </div>
-              <h2>YC Directory - A Startup Showcase App</h2>
             </div>
           </div>
         </div>
