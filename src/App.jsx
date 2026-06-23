@@ -4,6 +4,7 @@ import Hero from "./sections/Hero";
 import Navbar from "./components/NavBar";
 import Preloader from "./components/Preloader";
 import ProjectsPage from "./pages/ProjectsPage";
+import ProjectDetailPage from "./pages/ProjectDetailPage";
 
 // Lazy load below-the-fold sections
 const ShowcaseSection = lazy(() => import("./sections/ShowcaseSection"));
@@ -13,8 +14,8 @@ const TechStack = lazy(() => import("./sections/TechStack"));
 const Contact = lazy(() => import("./sections/Contact"));
 const Footer = lazy(() => import("./sections/Footer"));
 
-// Main home page layout
-const HomePage = ({ onLoaded }) => (
+// Main home page
+const HomePage = () => (
   <>
     <Navbar />
     <Hero />
@@ -38,6 +39,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:id" element={<ProjectDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
