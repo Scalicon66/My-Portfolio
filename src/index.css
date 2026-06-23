@@ -243,26 +243,38 @@ section {
   }
 
   .cta-button {
-    @apply px-4 py-4 rounded-lg bg-black-200 flex justify-center items-center relative cursor-pointer overflow-hidden;
+    @apply px-6 py-4 rounded-lg bg-black-200 flex justify-center items-center
+           relative cursor-pointer overflow-hidden w-full;
 
+    /* ── Desktop: animated sliding circle + arrow ── */
     .bg-circle {
-      @apply absolute -right-10 origin-center top-1/2 -translate-y-1/2 
-        w-[120%] h-[120%] group-hover:size-10 group-hover:right-10
-        rounded-full bg-white-50 transition-all duration-500;
+      @apply hidden md:block absolute -right-10 origin-center top-1/2 -translate-y-1/2
+             w-[120%] h-[120%] group-hover:size-10 group-hover:right-10
+             rounded-full bg-white-50 transition-all duration-500;
     }
 
     .text {
-      @apply uppercase md:text-lg text-black transition-all duration-500
-        group-hover:text-white-50 group-hover:-translate-x-5 xl:translate-x-0 -translate-x-5;
+      @apply uppercase text-base md:text-lg font-semibold text-white
+             transition-all duration-500
+             md:text-black
+             md:group-hover:text-white-50 md:group-hover:-translate-x-5;
     }
 
     .arrow-wrapper {
-      @apply group-hover:bg-white-50 size-10 rounded-full absolute right-10 top-1/2 
-        -translate-y-1/2 flex justify-center items-center overflow-hidden;
+      @apply group-hover:bg-white-50 size-10 rounded-full
+             absolute right-10 top-1/2 -translate-y-1/2
+             justify-center items-center overflow-hidden
+             hidden md:flex;
+    }
 
-      img {
-        @apply size-5 xl:-translate-y-32 translate-y-0 animate-bounce group-hover:translate-y-0 transition-all duration-500;
-      }
+    /* Show status icons on mobile too */
+    .arrow-wrapper.status-active {
+      @apply flex;
+    }
+
+    .arrow-wrapper img {
+      @apply size-5 xl:-translate-y-32 translate-y-0 animate-bounce
+             group-hover:translate-y-0 transition-all duration-500;
     }
   }
 
