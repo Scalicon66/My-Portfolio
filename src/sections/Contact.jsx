@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
 
 import TitleHeader from "../components/TitleHeader";
@@ -12,6 +12,16 @@ const Contact = () => {
     email: "",
     message: "",
   });
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+
+  useEffect(() => {
+    if (toast.show) {
+      const timer = setTimeout(() => {
+        setToast((prev) => ({ ...prev, show: false }));
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast.show]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,15 +42,84 @@ const Contact = () => {
 
       // Reset form and stop loading
       setForm({ name: "", email: "", message: "" });
+      setToast({
+        show: true,
+        message: "Thank you! Your message has been sent successfully. 🚀",
+        type: "success",
+      });
     } catch (error) {
-      console.error("EmailJS Error:", error); // Optional: show toast
+      console.error("EmailJS Error:", error);
+      setToast({
+        show: true,
+        message: "Oops! Something went wrong. Please try again. 😢",
+        type: "error",
+      });
     } finally {
       setLoading(false); // Always stop loading, even on error
     }
   };
 
   return (
-    <section id="contact" className="flex-center section-padding">
+    <section id="contact" className="flex-center section-padding relative">
+      {toast.show && (
+        <div
+          className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border backdrop-blur-md toast-animate ${
+            toast.type === "success"
+              ? "bg-emerald-950/90 border-emerald-500/30 text-emerald-200"
+              : "bg-rose-950/90 border-rose-500/30 text-rose-200"
+          }`}
+        >
+          {toast.type === "success" ? (
+            <svg
+              className="w-5 h-5 text-emerald-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-5 h-5 text-rose-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          )}
+          <span className="text-sm font-medium">{toast.message}</span>
+          <button
+            type="button"
+            onClick={() => setToast((prev) => ({ ...prev, show: false }))}
+            className="ml-2 opacity-60 hover:opacity-100 transition-opacity p-0.5 rounded-full hover:bg-white/10 cursor-pointer"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      )}
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
           title="Get in Touch – Let’s Connect"
