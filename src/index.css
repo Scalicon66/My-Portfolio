@@ -542,3 +542,38 @@ section {
 .toast-animate {
   animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ── Click Dot Effect ── */
+.click-dot-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.click-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.9), rgba(59, 130, 246, 0.6));
+  transform: translate(-50%, -50%) scale(0);
+  animation: clickDotPulse 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.5), 0 0 24px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes clickDotPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
