@@ -1,12 +1,17 @@
+import { lazy, Suspense } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useMediaQuery } from "react-responsive";
 
 import AnimatedCounter from "../components/AnimatedCounter";
 import Button from "../components/Button";
 import { words } from "../constants";
-import HeroExperience from "../components/models/hero_models/HeroExperience";
+
+const HeroExperience = lazy(() => import("../components/models/hero_models/HeroExperience"));
 
 const Hero = () => {
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
   useGSAP(() => {
     gsap.fromTo(
       ".hero-text h1",
@@ -63,12 +68,16 @@ const Hero = () => {
           </div>
         </header>
 
-        {/* RIGHT: 3D Model or Visual */}
-        <figure>
-          <div className="hero-3d-layout">
-            <HeroExperience />
-          </div>
-        </figure>
+        {/* RIGHT: 3D Model or Visual (Desktop Only) */}
+        {!isMobile && (
+          <figure>
+            <div className="hero-3d-layout">
+              <Suspense fallback={null}>
+                <HeroExperience />
+              </Suspense>
+            </div>
+          </figure>
+        )}
       </div>
 
       <AnimatedCounter />
