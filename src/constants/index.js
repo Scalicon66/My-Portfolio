@@ -131,6 +131,11 @@ const socialImgs = [
     imgPath: "/images/linkedin.png",
     url: "https://linkedin.com/in/omar-ash1/",
   },
+  {
+    name: "github",
+    imgPath: "/images/github.svg",
+    url: "https://github.com/Scalicon66",
+  },
 ];
 
 export {
