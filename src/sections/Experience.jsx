@@ -99,7 +99,7 @@ const Experience = () => {
           title="Professional Work Experience"
           sub="💼 My Career Overview"
         />
-        <div className="mt-32 relative">
+        <div className="mt-16 md:mt-32 relative">
           <div className="relative z-50 xl:space-y-32 space-y-10">
             {expCards.map((card, index) => (
               <div key={card.title} className="exp-card-wrapper">
@@ -110,8 +110,9 @@ const Experience = () => {
                       <div className="timeline" />
                       <div className="gradient-line w-1 h-full" />
                     </div>
-                    <div className="expText flex xl:gap-20 md:gap-10 gap-5 relative z-20 w-full">
-                      <div className="timeline-logo shrink-0">
+                    <div className="expText flex flex-col md:flex-row xl:gap-20 md:gap-10 gap-5 relative z-20 w-full">
+                      {/* Standalone Logo on desktop, hidden on mobile */}
+                      <div className="timeline-logo hidden md:flex shrink-0">
                         <img 
                           src={card.logoPath} 
                           alt="logo" 
@@ -121,17 +122,39 @@ const Experience = () => {
                       </div>
                       <GlowCard index={index} className="w-full xl:w-1/2 shrink-0">
                         <div>
-                          <h1 className="font-semibold text-3xl">{card.title}</h1>
-                          <p className="my-5 text-white-50">
-                            🗓️&nbsp;{card.date}
-                          </p>
+                          {/* Mobile header (logo + title + date) */}
+                          <div className="flex items-center gap-4 mb-6 md:hidden">
+                            <div className="size-12 shrink-0 rounded-full border border-black-50 bg-black-100 flex items-center justify-center p-2">
+                              <img 
+                                src={card.logoPath} 
+                                alt="logo" 
+                                loading="lazy"
+                                className={card.logoPath === '/images/js.png' ? 'rounded-md w-full h-full object-contain' : 'w-full h-full object-contain'}
+                              />
+                            </div>
+                            <div>
+                              <h1 className="font-semibold text-xl">{card.title}</h1>
+                              <p className="text-white-50 text-sm">
+                                🗓️&nbsp;{card.date}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Desktop title + date */}
+                          <div className="hidden md:block">
+                            <h1 className="font-semibold text-2xl md:text-3xl">{card.title}</h1>
+                            <p className="my-5 text-white-50">
+                              🗓️&nbsp;{card.date}
+                            </p>
+                          </div>
+
                           <p className="text-[#839CB5] italic">
                             Responsibilities
                           </p>
-                          <ul className="list-disc ms-5 mt-5 flex flex-col gap-5 text-white-50">
+                          <ul className="list-disc ms-5 mt-5 flex flex-col gap-3 md:gap-5 text-white-50">
                             {card.responsibilities.map(
                               (responsibility, idx) => (
-                                <li key={idx} className="text-lg">
+                                <li key={idx} className="text-base md:text-lg">
                                   {responsibility}
                                 </li>
                               )
