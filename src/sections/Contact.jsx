@@ -6,22 +6,21 @@ import ContactExperience from "../components/models/contact/ContactExperience";
 
 const Contact = () => {
   const formRef = useRef(null);
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
     message: "",
   });
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [buttonStatus, setButtonStatus] = useState("idle"); // 'idle' | 'sending' | 'success' | 'error'
 
   useEffect(() => {
-    if (toast.show) {
+    if (buttonStatus === "success" || buttonStatus === "error") {
       const timer = setTimeout(() => {
-        setToast((prev) => ({ ...prev, show: false }));
-      }, 5000);
+        setButtonStatus("idle");
+      }, 4000);
       return () => clearTimeout(timer);
     }
-  }, [toast.show]);
+  }, [buttonStatus]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +29,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Show loading state
+    setButtonStatus("sending");
 
     try {
       await emailjs.sendForm(
@@ -40,86 +39,17 @@ const Contact = () => {
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
-      // Reset form and stop loading
+      // Reset form and set status to success
       setForm({ name: "", email: "", message: "" });
-      setToast({
-        show: true,
-        message: "Thank you! Your message has been sent successfully. 🚀",
-        type: "success",
-      });
+      setButtonStatus("success");
     } catch (error) {
       console.error("EmailJS Error:", error);
-      setToast({
-        show: true,
-        message: "Oops! Something went wrong. Please try again. 😢",
-        type: "error",
-      });
-    } finally {
-      setLoading(false); // Always stop loading, even on error
+      setButtonStatus("error");
     }
   };
 
   return (
     <section id="contact" className="flex-center section-padding relative">
-      {toast.show && (
-        <div
-          className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border backdrop-blur-md toast-animate ${
-            toast.type === "success"
-              ? "bg-emerald-950/90 border-emerald-500/30 text-emerald-200"
-              : "bg-rose-950/90 border-rose-500/30 text-rose-200"
-          }`}
-        >
-          {toast.type === "success" ? (
-            <svg
-              className="w-5 h-5 text-emerald-400 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          ) : (
-            <svg
-              className="w-5 h-5 text-rose-400 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          )}
-          <span className="text-sm font-medium">{toast.message}</span>
-          <button
-            type="button"
-            onClick={() => setToast((prev) => ({ ...prev, show: false }))}
-            className="ml-2 opacity-60 hover:opacity-100 transition-opacity p-0.5 rounded-full hover:bg-white/10 cursor-pointer"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-      )}
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
           title="Get in Touch – Let’s Connect"
@@ -172,14 +102,37 @@ const Contact = () => {
                   />
                 </div>
 
-                <button type="submit">
-                  <div className="cta-button group">
+                <button type="submit" disabled={buttonStatus === "sending"}>
+                  <div
+                    className={`cta-button group transition-all duration-300 ${
+                      buttonStatus === "success"
+                        ? "!bg-emerald-600 border-emerald-500"
+                        : buttonStatus === "error"
+                        ? "!bg-rose-600 border-rose-500"
+                        : ""
+                    }`}
+                  >
                     <div className="bg-circle" />
-                    <p className="text">
-                      {loading ? "Sending..." : "Send Message"}
+                    <p
+                      className={`text transition-all duration-300 ${
+                        buttonStatus === "success" || buttonStatus === "error"
+                          ? "!text-white"
+                          : ""
+                      }`}
+                    >
+                      {buttonStatus === "idle" && "Send Message"}
+                      {buttonStatus === "sending" && "Sending..."}
+                      {buttonStatus === "success" && "Message Sent! 🚀"}
+                      {buttonStatus === "error" && "Error! Try Again 😢"}
                     </p>
-                    <div className="arrow-wrapper">
-                      <img src="/images/arrow-down.svg" alt="arrow" />
+                    <div className="arrow-wrapper transition-all duration-300">
+                      {buttonStatus === "success" ? (
+                        <span className="text-emerald-200 font-bold text-lg select-none">✓</span>
+                      ) : buttonStatus === "error" ? (
+                        <span className="text-rose-200 font-bold text-lg select-none">✗</span>
+                      ) : (
+                        <img src="/images/arrow-down.svg" alt="arrow" />
+                      )}
                     </div>
                   </div>
                 </button>
