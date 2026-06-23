@@ -5,6 +5,7 @@ import Navbar from "./components/NavBar";
 import Preloader from "./components/Preloader";
 import ProjectsPage from "./pages/ProjectsPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Lazy load below-the-fold sections
 const ShowcaseSection = lazy(() => import("./sections/ShowcaseSection"));
@@ -36,6 +37,7 @@ const App = () => {
   return (
     <BrowserRouter>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/projects" element={<ProjectsPage />} />
